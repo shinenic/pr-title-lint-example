@@ -1,0 +1,15 @@
+name: 'Pull request title lint'
+description: 'Verify the pull request title'
+inputs:
+outputs:
+runs:
+  using: "composite"
+  steps:
+    - uses: morrisoncole/pr-lint-action@v1.7.0
+      with:
+        repo-token: '${{ secrets.GITHUB_TOKEN }}'
+        title-regex: "^(feat|fix|perf|refactor|chore|test)(?:\\(([^)]+)\\))?:\\s(?:\\[(\\d+)\\/(\\d+|N)\\]\\s)?(?:(?:(?!\\[).)+)(?:\\s\\[sc-(\\d+)\\])?$"
+        on-failed-regex-request-changes: false
+        on-failed-regex-fail-action: true
+        on-failed-regex-comment: "The pull request title doesn't match the rules. Please check the guideline here: [notion](https://www.notion.so/shypyard/Pull-request-code-review-convention-2c1f49d2382f4fa6a030c7db2da6e7ec)"
+        on-succeeded-regex-dismiss-review-comment: 'The pull request title matches the rules'
